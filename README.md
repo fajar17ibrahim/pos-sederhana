@@ -1,0 +1,2 @@
+# pos-sederhana
+Kasir Pintar
