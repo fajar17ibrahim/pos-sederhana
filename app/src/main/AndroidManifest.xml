@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Possederhana">
         <activity
+            android:name=".BarangFormActivity"
+            android:exported="false" />
+        <activity
             android:name=".CartActivity"
             android:exported="false" />
         <activity
