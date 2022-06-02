@@ -204,6 +204,7 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     progress.setVisibility(View.GONE);
+                    preferencesHelper.clearTrxId();
                     for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                         appleSnapshot.getRef().removeValue();
                     }
@@ -212,6 +213,7 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     progress.setVisibility(View.GONE);
+                    preferencesHelper.clearTrxId();
                     showToastMessage(databaseError.getMessage());
                 }
             });
