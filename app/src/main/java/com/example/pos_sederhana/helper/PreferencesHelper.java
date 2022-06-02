@@ -12,7 +12,7 @@ public class PreferencesHelper {
     private SharedPreferences.Editor editor;
 
     public PreferencesHelper(Activity activity) {
-        sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        sharedPref = activity.getSharedPreferences(StringUtils.PREFERENCES, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
     }
 
