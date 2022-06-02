@@ -7,6 +7,21 @@ public class Barang {
     private String nama_barang;
     private int stok;
 
+    public Barang(String code, String name, String stok) {
+        this.kode_barang = code;
+        this.nama_barang = name;
+        this.stok = Integer.parseInt(stok);
+    }
+
+    public Barang(int id, String code, String name, String stok) {
+        this.id_barang = id;
+        this.kode_barang = code;
+        this.nama_barang = name;
+        this.stok = Integer.parseInt(stok);
+    }
+
+    public Barang() { }
+
     public int getId_barang() {
         return id_barang;
     }

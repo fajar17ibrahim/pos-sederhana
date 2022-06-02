@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -25,6 +26,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_barang" />
 
     <TextView
+        android:id="@+id/tv_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jml : 20"
