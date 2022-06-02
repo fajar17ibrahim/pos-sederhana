@@ -11,11 +11,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.pos_sederhana.adapter.CheckoutAdapter;
 import com.example.pos_sederhana.callback.CheckoutCallback;
 import com.example.pos_sederhana.helper.DBHelper;
+import com.example.pos_sederhana.helper.PreferencesHelper;
 import com.example.pos_sederhana.model.Barang;
 import com.example.pos_sederhana.model.Cart;
 import com.example.pos_sederhana.model.Transaksi;
@@ -39,8 +42,13 @@ import butterknife.OnClick;
 
 public class CheckoutActivity extends AppCompatActivity implements CheckoutCallback {
 
+    private static final String TAG = "CheckoutActivity";
+
     @BindView(R.id.rv_cart)
     RecyclerView rvCart;
+
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     private DBHelper dbHelper;
     private CheckoutAdapter adapter;
@@ -57,10 +65,10 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
         ButterKnife.bind(this);
 
         database = FirebaseDatabase.getInstance();
+        getReference = database.getReference();
 
         dbHelper = new DBHelper(getApplicationContext());
         setListCart();
-
 
     }
 
@@ -113,6 +121,8 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
 
     @OnClick(R.id.btn_save)
     public void onClickSaveTrx() {
+        progress.setVisibility(View.VISIBLE);
+
         Random random = new Random();
         int trxId = random.nextInt(10000) + 1;
         String dateCreated = DateUtils.getCurrentDate();
@@ -124,6 +134,7 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
                 .addOnSuccessListener(this, new OnSuccessListener() {
                     @Override
                     public void onSuccess(Object o) {
+                        progress.setVisibility(View.GONE);
                         showToastMessage("Transaksi berhasil disimpan");
 
                         dbHelper.deleteAllCart();;
@@ -135,6 +146,7 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
                 }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progress.setVisibility(View.GONE);
                 showToastMessage("Transaksi gagal disimpan");
             }
         });
@@ -142,6 +154,7 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
 
     @OnClick(R.id.btn_submit)
     public void onClickSubmitTrx() {
+        progress.setVisibility(View.VISIBLE);
         try {
             Random random = new Random();
             int trxId = random.nextInt(10000) + 1;
@@ -162,38 +175,49 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
             if (saved) {
                 updateStock(cartList);
                 dbHelper.deleteAllCart();
-                removeTrxFromFirebase(trxId);
+                removeTrxFromFirebase();
                 showToastMessage("Transaksi berhasil disimpan");
 
                 Intent intent = new Intent(CheckoutActivity.this, MainActivity.class);
                 startActivity(intent);
             } else {
+                progress.setVisibility(View.GONE);
                 showToastMessage("Transaksi gagal disimpan");
             }
 
             dbHelper.close();
         } catch (Exception e) {
+            progress.setVisibility(View.GONE);
             e.printStackTrace();
         }
 
     }
 
-    private void removeTrxFromFirebase(int id) {
-        Query applesQuery = getReference.child("Order").orderByChild("id_trx").equalTo(id);
+    private void removeTrxFromFirebase() {
+        PreferencesHelper preferencesHelper = new PreferencesHelper(this);
+        int id = preferencesHelper.getTrxId();
 
-        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                    appleSnapshot.getRef().removeValue();
+        if (id > 0) {
+            Query applesQuery = getReference.child("Order").orderByChild("id_trx").equalTo(id);
+
+            applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    progress.setVisibility(View.GONE);
+                    for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
+                        appleSnapshot.getRef().removeValue();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                showToastMessage(databaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    progress.setVisibility(View.GONE);
+                    showToastMessage(databaseError.getMessage());
+                }
+            });
+        } else {
+            Log.d(TAG, "removeTrxFromFirebase->id " + id);
+        }
     }
 
     private void updateStock(List<Cart> cartList) {

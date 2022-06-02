@@ -15,8 +15,10 @@ import android.util.Log;
 import com.example.pos_sederhana.adapter.OrderAdapter;
 import com.example.pos_sederhana.callback.OrderCallback;
 import com.example.pos_sederhana.helper.DBHelper;
+import com.example.pos_sederhana.helper.PreferencesHelper;
 import com.example.pos_sederhana.model.Cart;
 import com.example.pos_sederhana.model.Transaksi;
+import com.example.pos_sederhana.utils.StringUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -115,6 +117,9 @@ public class OrderActivity extends AppCompatActivity implements OrderCallback {
             dbHelper.saveCart(cart);
         }
         dbHelper.close();
+
+        PreferencesHelper preferencesHelper = new PreferencesHelper(this);
+        preferencesHelper.setTrxId(transaksi.getId_trx());
 
         Intent intent = new Intent(OrderActivity.this, CheckoutActivity.class);
         startActivity(intent);
