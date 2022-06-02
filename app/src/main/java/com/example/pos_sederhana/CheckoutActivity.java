@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.pos_sederhana.adapter.CheckoutAdapter;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -142,7 +144,7 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
     public void onClickSubmitTrx() {
         try {
             Random random = new Random();
-            int trxId = random.nextInt(1 - 10000) + 1;
+            int trxId = random.nextInt(10000) + 1;
             String dateCreated = DateUtils.getCurrentDate();
             Transaksi transaksi = new Transaksi(trxId, dateCreated, cartList);
 
@@ -158,7 +160,9 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
                 saved = dbHelper.saveTrx(transaksi);
 
             if (saved) {
+                updateStock(cartList);
                 dbHelper.deleteAllCart();
+                removeTrxFromFirebase(trxId);
                 showToastMessage("Transaksi berhasil disimpan");
 
                 Intent intent = new Intent(CheckoutActivity.this, MainActivity.class);
@@ -172,7 +176,40 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
             e.printStackTrace();
         }
 
+    }
 
+    private void removeTrxFromFirebase(int id) {
+        Query applesQuery = getReference.child("Order").orderByChild("id_trx").equalTo(id);
+
+        applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                    appleSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                showToastMessage(databaseError.getMessage());
+            }
+        });
+    }
+
+    private void updateStock(List<Cart> cartList) {
+        for (Cart cart : cartList) {
+            Cursor cursor = dbHelper.getBarang(cart.getId_barang());
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                Barang barang = new Barang();
+                barang.setId_barang(cursor.getInt(cursor.getColumnIndexOrThrow("id_barang")));
+                barang.setKode_barang(cursor.getString(cursor.getColumnIndexOrThrow("kode_barang")));
+                barang.setNama_barang(cursor.getString(cursor.getColumnIndexOrThrow("nama_barang")));
+                barang.setStok(cursor.getInt(cursor.getColumnIndexOrThrow("stok")) - cart.getQty());
+                dbHelper.updateBarang(barang);
+                dbHelper.close();
+            }
+        }
     }
 
     private void showToastMessage(String message) {

@@ -40,6 +40,7 @@ public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.View
         Barang barang = barangList.get(position);
         holder.tvCode.setText(barang.getKode_barang());
         holder.tvBarang.setText(barang.getNama_barang());
+        holder.tvStok.setText("Stok : " + barang.getStok());
 
         holder.btnAddToCart.setOnClickListener(v -> callback.addToCart(barang));
     }
@@ -53,6 +54,7 @@ public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.View
 
         TextView tvBarang;
         TextView tvCode;
+        TextView tvStok;
         Button btnAddToCart;
 
         public ViewHolder(@NonNull View itemView) {
@@ -60,6 +62,7 @@ public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.View
 
             tvCode = itemView.findViewById(R.id.tv_code);
             tvBarang = itemView.findViewById(R.id.tv_barang);
+            tvStok = itemView.findViewById(R.id.tv_stock);
 
             btnAddToCart = itemView.findViewById(R.id.btn_add_to_cart);
         }
