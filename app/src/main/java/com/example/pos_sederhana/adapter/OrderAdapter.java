@@ -38,8 +38,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transaksi transaksi = transaksiList.get(position);
+        int label = position + 1;
         holder.tvCode.setText(String.valueOf(transaksi.getId_trx()));
-        holder.tvOrder.setText("Order " + position);
+        holder.tvOrder.setText("Order " + label);
 
         holder.btnLoad.setOnClickListener(v -> callback.load(transaksi));
         holder.btnDel.setOnClickListener(v -> callback.remove(transaksi.getId_trx()));

@@ -116,21 +116,6 @@ public class CheckoutActivity extends AppCompatActivity implements CheckoutCallb
         String dateCreated = DateUtils.getCurrentDate();
         Transaksi transaksi = new Transaksi(trxId, dateCreated, cartList);
         getReference = database.getReference();
-//        getReference.child("Order").push()
-//                .addSuc(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        getReference.setValue(transaksi);
-//                        showToastMessage("Transaksi berhasil disimpan");
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        showToastMessage("Transaksi gagal disimpan");
-//                    }
-//                });
         getReference.child("Order")
                 .push()
                 .setValue(transaksi)

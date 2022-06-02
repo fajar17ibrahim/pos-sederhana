@@ -42,11 +42,13 @@
 
     <Button
         android:id="@+id/btn_tambah_barang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
         android:layout_margin="20dp"
         android:text="Tambah Barang"
         android:textSize="10dp"
+        android:textColor="@color/white"
+        android:background="@color/teal_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

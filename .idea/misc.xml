@@ -3,18 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_barang.xml" value="0.2" />
+        <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_barang.xml" value="0.21" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_barang_form.xml" value="0.18" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_cart.xml" value="0.33" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_checkout.xml" value="0.25" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_order.xml" value="0.27521367521367524" />
-        <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_transaksi.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_transaksi.xml" value="0.25982905982905985" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/activity_transaksi_history.xml" value="0.1" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/adapter_barang.xml" value="0.33" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/adapter_cart.xml" value="0.25" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/adapter_check_out.xml" value="0.25" />
-        <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/adapter_order.xml" value="0.5" />
+        <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/adapter_order.xml" value="0.25" />
         <entry key="..\:/AndroidProject/Kasir Pintar/app/src/main/res/layout/adapter_transaksi.xml" value="0.33" />
       </map>
     </option>
